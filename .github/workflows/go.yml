@@ -35,7 +35,6 @@ jobs:
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
       with:
         tag_name: ${{ format('go-langserver{0}', github.sha)}}
         name: ${{ format('go-langserver{0}', github.sha)}}
