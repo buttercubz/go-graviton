@@ -34,7 +34,7 @@ jobs:
       run: ${{ format('go build -o go-langserver_{0} "github.com/sourcegraph/go-langserver"', runner.os ) }} 
 
     - name: Create Release
-       uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           tag_name: ${{ format('go-langserver{0}', github.sha)}}
