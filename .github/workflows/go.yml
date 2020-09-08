@@ -27,16 +27,20 @@ jobs:
       with:
         submodules: true
 
-    - name: Build go-langserver
-      run: |
-        go get -u github.com/sourcegraph/go-langserver
-        if [ "$RUNNER_OS" == "Windows" ]; then
-              go build -o go-langserver_win32.exe "github.com/sourcegraph/go-langserver"
-        elseif [ "$RUNNER_OS" == "Linux" ]; then
-              go build -o go-langserver_linux "github.com/sourcegraph/go-langserver"
-        elseif [ "$RUNNER_OS" == "macOS" ]; then
-              go build -o go-langserver_darwin "github.com/sourcegraph/go-langserver"
-        fi
+    - name: Download go-langserver
+      run: go get -u github.com/sourcegraph/go-langserver
+
+    - name: Build go-langserver for Windows
+      if: ${{ runner.os == 'Windows' }}
+      run: go build -o go-langserver_win32.exe "github.com/sourcegraph/go-langserver"
+
+    - name: Build go-langserver for Linux
+      if: ${{ runner.os == 'Linux' }}
+      run: go build -o go-langserver_linux "github.com/sourcegraph/go-langserver"
+
+    - name: Build go-langserver for macOS
+      if: ${{ runner.os == 'macOS' }}
+      run: go build -o go-langserver_darwin "github.com/sourcegraph/go-langserver"
 
     - name: Create Release
       id: create_release
@@ -44,7 +48,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
+        tag_name: go-langserver ${{ github.ref }}
         release_name: go-langserver ${{ github.ref }}
         draft: false
         prerelease: false
