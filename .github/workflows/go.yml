@@ -10,7 +10,10 @@ jobs:
 
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
 
     - name: Set up Go 1.x
@@ -27,7 +30,13 @@ jobs:
     - name: Build go-langserver
       run: |
         go get -u github.com/sourcegraph/go-langserver
-        go build -o go-langserver "github.com/sourcegraph/go-langserver"
+        if [ "$RUNNER_OS" == "Windows" ]; then
+              go build -o go-langserver_win32.exe "github.com/sourcegraph/go-langserver"
+        elseif [ "$RUNNER_OS" == "Linux" ]; then
+              go build -o go-langserver_linux "github.com/sourcegraph/go-langserver"
+        elseif [ "$RUNNER_OS" == "macOS" ]; then
+              go build -o go-langserver_darwin "github.com/sourcegraph/go-langserver"
+        fi
 
     - name: Create Release
       id: create_release
