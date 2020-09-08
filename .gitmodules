@@ -1,3 +1,0 @@
-[submodule "go-langserver"]
-	path = go-langserver
-	url = https://github.com/sourcegraph/go-langserver
