@@ -35,23 +35,11 @@ jobs:
 
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: meeDamian/github-release@v2.0.3
       with:
-        tag_name: ${{ format('go-langserver{0}', github.sha)}}
-        release_name: ${{ format('go-langserver{0}', github.sha)}}
-        draft: false
-        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ format('go-langserver{0}', github.sha)}}
+        name: ${{ format('go-langserver{0}', github.sha)}}
         allow_override: true
-    - name: Upload Linux build
-      if: ${{ runner.os == 'Linux' }}
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ${{ format('./go-langserver_{0}', runner.os ) }} 
-        asset_name: ${{ format('go-langserver_{0}', runner.os ) }} 
-        asset_content_type: application/octet-stream
+        files: > 
+          ${{ format('./go-langserver_{0}', runner.os ) }} 
