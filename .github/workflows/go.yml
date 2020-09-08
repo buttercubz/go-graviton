@@ -30,17 +30,8 @@ jobs:
     - name: Download go-langserver
       run: go get -u github.com/sourcegraph/go-langserver
 
-    - name: Build go-langserver for Windows
-      if: ${{ runner.os == 'Windows' }}
-      run: go build -o go-langserver_win32.exe "github.com/sourcegraph/go-langserver"
-
-    - name: Build go-langserver for Linux
-      if: ${{ runner.os == 'Linux' }}
-      run: go build -o go-langserver_linux "github.com/sourcegraph/go-langserver"
-
-    - name: Build go-langserver for macOS
-      if: ${{ runner.os == 'macOS' }}
-      run: go build -o go-langserver_darwin "github.com/sourcegraph/go-langserver"
+    - name: Build go-langserver
+      run: ${{ format('go build -o go-langserver_{0} "github.com/sourcegraph/go-langserver"', runner.os ) }} 
 
     - name: Create Release
       id: create_release
@@ -52,13 +43,14 @@ jobs:
         release_name: go-langserver
         draft: false
         prerelease: false
-    - name: Upload Release Asset
+    - name: Upload Linux build
+      if: ${{ runner.os == 'Linux' }}
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ./go-langserver
-        asset_name: go-langserver
+        asset_path: ${{ format('./go-langserver_{0}', runner.os ) }} 
+        asset_name: ${{ format('go-langserver_{0}', runner.os ) }} 
         asset_content_type: application/octet-stream
