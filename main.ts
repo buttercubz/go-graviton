@@ -1,30 +1,47 @@
+import { download, getOS } from "./downloader";
 import path from "path";
-import os from "os";
+import fs from "fs";
 
-function Platform() {
-  switch (os.platform()) {
-    case "win32":
-      return path.join(__dirname, "bin", "win-go-langserver.exe");
+export function entry({ RunningConfig, Notification, StatusBarItem }: any) {
+  const binDir = fs.existsSync(path.join(__dirname, "bin"));
 
-    case "linux":
-      return path.join(__dirname, "bin", "linux-go-langserver");
+  // * if binary or bin dir not exist
+  if (!binDir || !fs.existsSync(getOS().path)) {
+    if (!binDir) {
+      fs.mkdirSync(path.join(__dirname, "bin"), { recursive: true });
+    }
 
-    case "darwin":
-      return path.join(__dirname, "bin", "darwin-go-langserver");
-
-    default:
-      throw new Error("Platform not supported.");
+    const notify = new Notification({
+      title: "Go",
+      content:
+        "Go plugin need to download some necessary files",
+      lifeTime: Infinity,
+      buttons: [
+        {
+          label: "Download",
+          action() {
+            download(getOS().platform, { Notification, StatusBarItem });
+          },
+        },
+        {
+          label: "Later",
+          action() {
+            notify.remove();
+          },
+        },
+      ],
+    });
   }
-}
 
-export function entry({ RunningConfig }) {
-  RunningConfig.emit("registerLanguageServer", {
-    modes: ["go"],
-    args: [
-      Platform(),
-      "-gocodecompletion",
-      "-func-snippet-enabled",
-      "-diagnostics",
-    ],
-  });
+  else {
+    RunningConfig.emit("registerLanguageServer", {
+      modes: ["go"],
+      args: [
+        getOS().path,
+        "-gocodecompletion",
+        "-func-snippet-enabled",
+        "-diagnostics",
+      ],
+    });
+  }
 }
