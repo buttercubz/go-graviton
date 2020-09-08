@@ -24,14 +24,6 @@ jobs:
       with:
         submodules: true
 
-    - name: Get dependencies
-      run: |
-        go get -v -t -d ./...
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
-
     - name: Build go-langserver
       run: go build -o go-langserver "github.com/sourcegraph/go-langserver"
 
