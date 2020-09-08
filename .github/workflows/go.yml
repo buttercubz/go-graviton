@@ -26,8 +26,8 @@ jobs:
 
     - name: Build go-langserver
       run: |
-        - go get -u github.com/sourcegraph/go-langserver
-        - go build -o go-langserver "github.com/sourcegraph/go-langserver"
+        go get -u github.com/sourcegraph/go-langserver
+        go build -o go-langserver "github.com/sourcegraph/go-langserver"
 
     - name: Create Release
       id: create_release
