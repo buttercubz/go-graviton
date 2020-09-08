@@ -9,11 +9,15 @@ import fs from "fs";
 
 type Platform = "win" | "linux" | "darwin";
 
+const Platforms = {
+	darwin: "macOS",
+	linux: "Linux",
+	win32: "Windows"
+}
+
 function download(platform: Platform, { StatusBarItem, Notification }: any) {
   const dl = new DownloaderHelper(
-    `https://github.com/buttercubz/go-graviton/raw/master/bin/${platform}-go-langserver${
-      platform === "win" ? ".exe" : ""
-    }`,
+    `https://github.com/marc2332/go-graviton/releases/download/go-langserverbf346405417c9f3f1e3f3370381b045c00bbc2bc/go-langserver_${Platforms[platform]}`,
     path.join(__dirname, "bin")
   );
 

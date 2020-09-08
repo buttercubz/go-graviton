@@ -1,6 +1,6 @@
 {
   "name": "Go",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "id": "go-plugin",
   "mainSrc": "main.ts",
   "description": "go language support",
