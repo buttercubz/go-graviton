@@ -96,13 +96,13 @@ function getOS(): { platform: Platform; path: string } {
     case "linux":
       return {
         platform: "linux",
-        path: path.join(__dirname, "bin", "langserver_Linux"),
+        path: path.join(__dirname, "bin", "go-langserver_Linux"),
       };
 
     case "darwin":
       return {
         platform: "darwin",
-        path: path.join(__dirname, "bin", "langserver_macOS"),
+        path: path.join(__dirname, "bin", "go-langserver_macOS"),
       };
 
     default:
