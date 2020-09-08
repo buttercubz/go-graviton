@@ -34,12 +34,12 @@ jobs:
       run: ${{ format('go build -o go-langserver_{0} "github.com/sourcegraph/go-langserver"', runner.os ) }} 
 
     - name: Create Release
-      id: create_release
-      uses: meeDamian/github-release@v2.0.3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ format('go-langserver{0}', github.sha)}}
-        name: ${{ format('go-langserver{0}', github.sha)}}
-        allow_override: true
-        files: > 
-          ${{ format('./go-langserver_{0}', runner.os ) }} 
+       uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          tag_name: ${{ format('go-langserver{0}', github.sha)}}
+          name: ${{ format('go-langserver{0}', github.sha)}}
+          files: |
+            ${{ format('./go-langserver_{0}', runner.os ) }} 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
