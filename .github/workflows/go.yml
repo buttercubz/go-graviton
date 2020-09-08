@@ -1,0 +1,44 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    steps:
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Download go-langserver
+      run: go get -u github.com/sourcegraph/go-langserver
+
+    - name: Build go-langserver
+      run: ${{ format('go build -o go-langserver_{0} "github.com/sourcegraph/go-langserver"', runner.os ) }} 
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ format('go-langserver{0}', github.sha)}}
+        name: ${{ format('go-langserver{0}', github.sha)}}
+        files: |
+          ${{ format('./go-langserver_{0}', runner.os ) }} 
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
