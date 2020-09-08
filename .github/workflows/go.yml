@@ -31,7 +31,7 @@ jobs:
         fi
 
     - name: Build go-langserver
-      run: go build -o go-langserver github.com/sourcegraph/go-langserver
+      run: go build -o go-langserver https://github.com/sourcegraph/go-langserver
 
     - name: Create Release
       id: create_release
