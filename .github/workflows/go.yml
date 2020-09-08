@@ -43,6 +43,7 @@ jobs:
         release_name: ${{ format('go-langserver{0}', github.sha)}}
         draft: false
         prerelease: false
+        allow_override: true
     - name: Upload Linux build
       if: ${{ runner.os == 'Linux' }}
       id: upload-release-asset 
