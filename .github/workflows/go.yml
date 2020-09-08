@@ -39,8 +39,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: go-langserver
-        release_name: go-langserver
+        tag_name: ${{ format('go-langserver{0}', github.sha)}}
+        release_name: ${{ format('go-langserver{0}', github.sha)}}
         draft: false
         prerelease: false
     - name: Upload Linux build
