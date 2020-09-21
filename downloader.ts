@@ -12,14 +12,19 @@ type Platform = "win" | "linux" | "darwin";
 const Platforms = {
   darwin: "macOS",
   linux: "Linux",
-  win: "Windows"
-}
+  win: "windows",
+};
 
 function download(platform: Platform, { StatusBarItem, Notification }: any) {
   const dl = new DownloaderHelper(
-    `https://github.com/marc2332/go-graviton/releases/download/go-langserverbf346405417c9f3f1e3f3370381b045c00bbc2bc/go-langserver_${Platforms[platform]}`,
-    path.join(__dirname, "bin"),{
-      fileName: `go-langserver_${Platforms[platform]}${platform === "win" ? ".exe" : "" }`
+    `https://github.com/buttercubz/go-graviton/raw/master/bin/go-langserver_${
+      Platforms[platform]
+    }${platform === "win" ? ".exe" : ""}`,
+    path.join(__dirname, "bin"),
+    {
+      fileName: `go-langserver_${Platforms[platform]}${
+        platform === "win" ? ".exe" : ""
+      }`,
     }
   );
 
@@ -55,7 +60,7 @@ function download(platform: Platform, { StatusBarItem, Notification }: any) {
 
     setTimeout(() => {
       barItem.hide();
-    }, 500);
+    }, 1000);
 
     const notify = new Notification({
       title: "Go (download error)",
@@ -90,7 +95,7 @@ function getOS(): { platform: Platform; path: string } {
     case "win32":
       return {
         platform: "win",
-        path: path.join(__dirname, "bin", "go-langserver_Windows.exe"),
+        path: path.join(__dirname, "bin", "go-langserver_windows.exe"),
       };
 
     case "linux":
