@@ -7,6 +7,9 @@
   "mainDev": "dist/index.js",
   "author": "Buttercubz",
   "main": "index.js",
+  "assets": [
+    "./bin"
+  ],
   "scripts": {
     "watch": "gvsdk --project . --target plugin --mode dev",
     "build": "gvsdk --project . --target plugin --mode release"
@@ -15,7 +18,7 @@
     "node-downloader-helper": "^1.0.13"
   },
   "devDependencies": {
-    "@gveditor/sdk": "^0.3.7",
+    "@gveditor/sdk": "^0.4.2",
     "@types/node": "^14.6.2",
     "@types/node-downloader-helper": "^1.0.2"
   }
