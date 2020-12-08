@@ -1,7 +1,7 @@
 name: Go
 
 on:
-  push:
+  pull_request:
     branches: [ master ]
 
 jobs:
@@ -30,13 +30,3 @@ jobs:
 
     - name: Build go-langserver
       run: ${{ format('go build -o go-langserver_{0} "github.com/sourcegraph/go-langserver"', runner.os ) }} 
-
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ format('go-langserver{0}', github.sha)}}
-        name: ${{ format('go-langserver{0}', github.sha)}}
-        files: |
-          ${{ format('./go-langserver_{0}', runner.os ) }} 
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
